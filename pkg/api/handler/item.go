@@ -1,6 +1,7 @@
 package handler
 
 import (
+	todo "RESTAPIService2"
 	"RESTAPIService2/pkg/api/utils"
 	"RESTAPIService2/pkg/service/item"
 	"encoding/json"
@@ -19,7 +20,7 @@ func CreateItem(service item.TodoItemService) http.HandlerFunc {
 			return
 		}
 
-		var input item.TodoItem
+		var input todo.TodoItem
 		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 			utils.NewErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -132,7 +133,7 @@ func UpdateItem(service item.TodoItemService) http.HandlerFunc {
 			return
 		}
 
-		var input item.UpdateItemInput
+		var input todo.UpdateItemInput
 		if err = json.NewDecoder(r.Body).Decode(&input); err != nil {
 			utils.NewErrorResponse(w, http.StatusBadRequest, err.Error())
 			return

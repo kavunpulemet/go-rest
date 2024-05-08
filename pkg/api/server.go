@@ -26,8 +26,8 @@ func NewServer(middleware *middlewares.UserIdentityMiddleware) *Server {
 		httpServer: &http.Server{
 			Addr:           ":80",
 			MaxHeaderBytes: 1 << 20, // 1 MB
-			ReadTimeout:    10 * time.Second,
-			WriteTimeout:   10 * time.Second,
+			ReadTimeout:    60 * time.Second,
+			WriteTimeout:   60 * time.Second,
 			Handler:        router,
 		},
 		router:    router,

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	todo "RESTAPIService2"
 	"RESTAPIService2/pkg/api/utils"
 	"RESTAPIService2/pkg/service/list"
 	"encoding/json"
@@ -13,7 +14,7 @@ func CreateList(service list.TodoListService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userId := r.Context().Value("UserId").(int)
 
-		var input list.TodoList
+		var input todo.TodoList
 		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 			utils.NewErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -39,7 +40,7 @@ func CreateList(service list.TodoListService) http.HandlerFunc {
 }
 
 type getAllListsResponse struct {
-	Data []list.TodoList `json:"data"`
+	Data []todo.TodoList `json:"data"`
 }
 
 func GetAllLists(service list.TodoListService) http.HandlerFunc {
@@ -127,7 +128,7 @@ func UpdateList(service list.TodoListService) http.HandlerFunc {
 			return
 		}
 
-		var input list.UpdateListInput
+		var input todo.UpdateListInput
 		if err = json.NewDecoder(r.Body).Decode(&input); err != nil {
 			utils.NewErrorResponse(w, http.StatusBadRequest, err.Error())
 			return

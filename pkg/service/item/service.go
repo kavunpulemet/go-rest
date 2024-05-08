@@ -1,16 +1,16 @@
 package item
 
 import (
-	"RESTAPIService2/pkg/mappers"
+	todo "RESTAPIService2"
 	"RESTAPIService2/pkg/repository"
 )
 
 type TodoItemService interface {
-	Create(userId, listId int, item TodoItem) (int, error)
-	GetAll(userId, listId int) ([]TodoItem, error)
-	GetById(userId, itemId int) (TodoItem, error)
+	Create(userId, listId int, item todo.TodoItem) (int, error)
+	GetAll(userId, listId int) ([]todo.TodoItem, error)
+	GetById(userId, itemId int) (todo.TodoItem, error)
 	Delete(userId, itemId int) error
-	Update(userId, itemId int, input UpdateItemInput) error
+	Update(userId, itemId int, input todo.UpdateItemInput) error
 }
 
 type ImplTodoItem struct {
@@ -22,43 +22,27 @@ func NewTodoItemService(repo repository.TodoItemRepository, listRepo repository.
 	return &ImplTodoItem{repo: repo, listRepo: listRepo}
 }
 
-func (s *ImplTodoItem) Create(userId, listId int, item TodoItem) (int, error) {
+func (s *ImplTodoItem) Create(userId, listId int, item todo.TodoItem) (int, error) {
 	_, err := s.listRepo.GetById(userId, listId)
 	if err != nil {
 		return 0, err
 	}
 
-	return s.repo.Create(listId, mappers.MapToTodoItem(item))
+	return s.repo.Create(listId, item)
 }
 
-func (s *ImplTodoItem) GetAll(userId, listId int) ([]TodoItem, error) {
-	var todoItems []TodoItem
-
-	repositoryTodoItems, err := s.repo.GetAll(userId, listId)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, todoItem := range repositoryTodoItems {
-		todoItems = append(todoItems, mappers.MapFromTodoItem(todoItem))
-	}
-
-	return todoItems, nil
+func (s *ImplTodoItem) GetAll(userId, listId int) ([]todo.TodoItem, error) {
+	return s.repo.GetAll(userId, listId)
 }
 
-func (s *ImplTodoItem) GetById(userId, itemId int) (TodoItem, error) {
-	todoItem, err := s.repo.GetById(userId, itemId)
-	if err != nil {
-		return TodoItem{}, err
-	}
-
-	return mappers.MapFromTodoItem(todoItem), nil
+func (s *ImplTodoItem) GetById(userId, itemId int) (todo.TodoItem, error) {
+	return s.repo.GetById(userId, itemId)
 }
 
 func (s *ImplTodoItem) Delete(userId, itemId int) error {
 	return s.repo.Delete(userId, itemId)
 }
 
-func (s *ImplTodoItem) Update(userId, itemId int, input UpdateItemInput) error {
-	return s.repo.Update(userId, itemId, mappers.MapToUpdateItemInput(input))
+func (s *ImplTodoItem) Update(userId, itemId int, input todo.UpdateItemInput) error {
+	return s.repo.Update(userId, itemId, input)
 }

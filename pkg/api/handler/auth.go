@@ -1,19 +1,17 @@
 package handler
 
 import (
+	todo "RESTAPIService2"
 	"RESTAPIService2/pkg/api/utils"
 	"RESTAPIService2/pkg/service/auth"
 	"encoding/json"
 	"github.com/sirupsen/logrus"
 	"net/http"
-	"time"
 )
 
 func SignUp(service auth.AuthorizationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var input auth.User
-
-		time.Sleep(20 * time.Second)
+		var input todo.User
 
 		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 			utils.NewErrorResponse(w, http.StatusBadRequest, err.Error())
