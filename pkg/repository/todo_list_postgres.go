@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"RESTAPIService2/pkg/service/list"
+	todo "RESTAPIService2"
 	_ "embed"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -9,11 +9,11 @@ import (
 )
 
 type TodoListRepository interface {
-	Create(userId int, list list.TodoList) (int, error)
-	GetAll(userId int) ([]list.TodoList, error)
-	GetById(userId, listId int) (list.TodoList, error)
+	Create(userId int, list todo.TodoList) (int, error)
+	GetAll(userId int) ([]todo.TodoList, error)
+	GetById(userId, listId int) (todo.TodoList, error)
 	Delete(userId, listId int) error
-	Update(userId, listId int, input list.UpdateListInput) error
+	Update(userId, listId int, input todo.UpdateListInput) error
 }
 
 type TodoListPostgres struct {
@@ -30,7 +30,7 @@ var createList string
 //go:embed sql/CreateUsersLists.sql
 var createUsersLists string
 
-func (r *TodoListPostgres) Create(userId int, list list.TodoList) (int, error) {
+func (r *TodoListPostgres) Create(userId int, list todo.TodoList) (int, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return 0, err
@@ -55,8 +55,8 @@ func (r *TodoListPostgres) Create(userId int, list list.TodoList) (int, error) {
 //go:embed sql/GetAllLists.sql
 var getAllLists string
 
-func (r *TodoListPostgres) GetAll(userId int) ([]list.TodoList, error) {
-	var lists []list.TodoList
+func (r *TodoListPostgres) GetAll(userId int) ([]todo.TodoList, error) {
+	var lists []todo.TodoList
 
 	err := r.db.Select(&lists, getAllLists, userId)
 
@@ -66,8 +66,8 @@ func (r *TodoListPostgres) GetAll(userId int) ([]list.TodoList, error) {
 //go:embed sql/GetListById.sql
 var getListById string
 
-func (r *TodoListPostgres) GetById(userId, listId int) (list.TodoList, error) {
-	var list list.TodoList
+func (r *TodoListPostgres) GetById(userId, listId int) (todo.TodoList, error) {
+	var list todo.TodoList
 
 	err := r.db.Get(&list, getListById, userId, listId)
 
@@ -86,7 +86,7 @@ func (r *TodoListPostgres) Delete(userId, listId int) error {
 //go:embed sql/UpdateList.sql
 var updateList string
 
-func (r *TodoListPostgres) Update(userId, listId int, input list.UpdateListInput) error {
+func (r *TodoListPostgres) Update(userId, listId int, input todo.UpdateListInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1

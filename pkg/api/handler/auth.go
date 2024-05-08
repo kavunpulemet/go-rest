@@ -1,6 +1,7 @@
 package handler
 
 import (
+	todo "RESTAPIService2"
 	"RESTAPIService2/pkg/api/utils"
 	"RESTAPIService2/pkg/service/auth"
 	"encoding/json"
@@ -11,7 +12,7 @@ import (
 
 func SignUp(service auth.AuthorizationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var input auth.User
+		var input todo.User
 
 		time.Sleep(20 * time.Second)
 

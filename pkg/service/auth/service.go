@@ -1,6 +1,7 @@
 package auth
 
 import (
+	todo "RESTAPIService2"
 	"RESTAPIService2/pkg/repository"
 	"crypto/sha1"
 	"errors"
@@ -16,7 +17,7 @@ const (
 )
 
 type AuthorizationService interface {
-	CreateUser(user User) (int, error)
+	CreateUser(user todo.User) (int, error)
 	GenerateToken(username, password string) (string, error)
 	ParseToken(token string) (int, error)
 }
@@ -34,7 +35,7 @@ func NewAuthorizationService(repo repository.AuthorizationRepository) *ImplAutho
 	return &ImplAuthorizationService{repo: repo}
 }
 
-func (s *ImplAuthorizationService) CreateUser(user User) (int, error) {
+func (s *ImplAuthorizationService) CreateUser(user todo.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 	return s.repo.Create(user)
 }

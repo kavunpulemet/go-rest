@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"RESTAPIService2/pkg/repository/models"
+	todo "RESTAPIService2"
 	_ "embed"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -9,11 +9,11 @@ import (
 )
 
 type TodoItemRepository interface {
-	Create(listId int, item models.TodoItem) (int, error)
-	GetAll(userId, listId int) ([]models.TodoItem, error)
-	GetById(userId, itemId int) (models.TodoItem, error)
+	Create(listId int, item todo.TodoItem) (int, error)
+	GetAll(userId, listId int) ([]todo.TodoItem, error)
+	GetById(userId, itemId int) (todo.TodoItem, error)
 	Delete(userId, itemId int) error
-	Update(userId, itemId int, input models.UpdateItemInput) error
+	Update(userId, itemId int, input todo.UpdateItemInput) error
 }
 
 type TodoItemPostgres struct {
@@ -30,7 +30,7 @@ var createItem string
 //go:embed sql/CreateListsItems.sql
 var createListsItems string
 
-func (r *TodoItemPostgres) Create(listId int, item models.TodoItem) (int, error) {
+func (r *TodoItemPostgres) Create(listId int, item todo.TodoItem) (int, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return 0, err
@@ -55,8 +55,8 @@ func (r *TodoItemPostgres) Create(listId int, item models.TodoItem) (int, error)
 //go:embed sql/GetAllItems.sql
 var getAllItems string
 
-func (r *TodoItemPostgres) GetAll(userId, listId int) ([]models.TodoItem, error) {
-	var items []models.TodoItem
+func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) {
+	var items []todo.TodoItem
 
 	if err := r.db.Select(&items, getAllItems, listId, userId); err != nil {
 		return nil, err
@@ -68,8 +68,8 @@ func (r *TodoItemPostgres) GetAll(userId, listId int) ([]models.TodoItem, error)
 //go:embed sql/GetItemById.sql
 var getItemById string
 
-func (r *TodoItemPostgres) GetById(userId, itemId int) (models.TodoItem, error) {
-	var item models.TodoItem
+func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) {
+	var item todo.TodoItem
 
 	if err := r.db.Get(&item, getItemById, itemId, userId); err != nil {
 		return item, err
@@ -90,7 +90,7 @@ func (r *TodoItemPostgres) Delete(userId, itemId int) error {
 //go:embed sql/UpdateItem.sql
 var updateItem string
 
-func (r *TodoItemPostgres) Update(userId, itemId int, input models.UpdateItemInput) error {
+func (r *TodoItemPostgres) Update(userId, itemId int, input todo.UpdateItemInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1
