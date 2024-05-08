@@ -7,14 +7,11 @@ import (
 	"encoding/json"
 	"github.com/sirupsen/logrus"
 	"net/http"
-	"time"
 )
 
 func SignUp(service auth.AuthorizationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var input todo.User
-
-		time.Sleep(20 * time.Second)
 
 		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 			utils.NewErrorResponse(w, http.StatusBadRequest, err.Error())
