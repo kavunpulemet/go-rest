@@ -3,7 +3,31 @@ package mappers
 import (
 	"RESTAPIService2/pkg/repository/models"
 	"RESTAPIService2/pkg/service/item"
+	"RESTAPIService2/pkg/service/list"
 )
+
+func MapToTodoList(todoList list.TodoList) models.TodoList {
+	return models.TodoList{
+		Id:          todoList.Id,
+		Title:       todoList.Title,
+		Description: todoList.Description,
+	}
+}
+
+func MapFromTodoList(todoList models.TodoList) list.TodoList {
+	return list.TodoList{
+		Id:          todoList.Id,
+		Title:       todoList.Title,
+		Description: todoList.Description,
+	}
+}
+
+func MapToUpdateListInput(updateListInput list.UpdateListInput) models.UpdateListInput {
+	return models.UpdateListInput{
+		Title:       updateListInput.Title,
+		Description: updateListInput.Description,
+	}
+}
 
 func MapToTodoItem(todoItem item.TodoItem) models.TodoItem {
 	return models.TodoItem{
@@ -23,10 +47,10 @@ func MapFromTodoItem(todoItem models.TodoItem) item.TodoItem {
 	}
 }
 
-func MapToUpdateItemInput(UpdateItemInput item.UpdateItemInput) models.UpdateItemInput {
+func MapToUpdateItemInput(updateItemInput item.UpdateItemInput) models.UpdateItemInput {
 	return models.UpdateItemInput{
-		Title:       UpdateItemInput.Title,
-		Description: UpdateItemInput.Description,
-		Done:        UpdateItemInput.Done,
+		Title:       updateItemInput.Title,
+		Description: updateItemInput.Description,
+		Done:        updateItemInput.Done,
 	}
 }

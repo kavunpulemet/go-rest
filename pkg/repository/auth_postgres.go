@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"RESTAPIService2/pkg/service/auth"
+	"RESTAPIService2/pkg/repository/models"
 	_ "embed"
 	"github.com/jmoiron/sqlx"
 )
 
 type AuthorizationRepository interface {
-	Create(user auth.User) (int, error)
-	Get(username, password string) (auth.User, error)
+	Create(user models.User) (int, error)
+	Get(username, password string) (models.User, error)
 }
 
 type AuthorizationPostgres struct {
@@ -22,7 +22,7 @@ func NewAuthorizationPostgres(db *sqlx.DB) *AuthorizationPostgres {
 //go:embed sql/CreateUser.sql
 var createUser string
 
-func (r *AuthorizationPostgres) Create(user auth.User) (int, error) {
+func (r *AuthorizationPostgres) Create(user models.User) (int, error) {
 	var id int
 
 	row := r.db.QueryRow(createUser, user.Name, user.Username, user.Password) // stores information about the returned row from db
@@ -36,8 +36,8 @@ func (r *AuthorizationPostgres) Create(user auth.User) (int, error) {
 //go:embed sql/GetUser.sql
 var getUser string
 
-func (r *AuthorizationPostgres) Get(username, password string) (auth.User, error) {
-	var user auth.User
+func (r *AuthorizationPostgres) Get(username, password string) (models.User, error) {
+	var user models.User
 
 	err := r.db.Get(&user, getUser, username, password)
 
