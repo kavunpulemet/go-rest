@@ -34,7 +34,7 @@ func main() {
 
 	app := NewApp(ctx, settings)
 	if err = app.InitDatabase(); err != nil {
-		logrus.Errorf(err.Error())
+		logrus.Errorf("failed to initialize db: %s", err.Error())
 		return
 	}
 

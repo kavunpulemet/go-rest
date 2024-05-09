@@ -61,6 +61,7 @@ func (a *App) Run() error {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())
 		}
 	}()
+
 	logrus.Println("run server")
 	return nil
 }
